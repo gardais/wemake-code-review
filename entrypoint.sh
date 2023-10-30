@@ -14,17 +14,16 @@ echo
 
 # Runs `flake8`, possibly with `reviewdog`:
 if [ "$INPUT_REPORTER" == 'terminal' ]; then
-  output=$(flake8 --exit-zero $INPUT_PATH)
+  output=$(flake8 $INPUT_PATH )
   status="$?"
 elif [ "$INPUT_REPORTER" == 'github-pr-review' ] ||
      [ "$INPUT_REPORTER" == 'github-pr-check' ]; then
   # We will need this token for `reviewdog` to work:
   export REVIEWDOG_GITHUB_API_TOKEN="$GITHUB_TOKEN"
   # Running special version of `flake8` to match the `reviewdog` format:
-  output=$(flake8 --exit-zero $INPUT_PATH --append-config='/action-config.cfg')
+  output=$(flake8 $INPUT_PATH --append-config='/action-config.cfg')
   echo "$output" | reviewdog -f=pep8 -reporter="$INPUT_REPORTER" -level=error
-  # `reviewdog` does not fail with any status code, so we have to get dirty:
-  status=$(test "$output" = ''; echo $?)
+  status="$?"
 else
   output="Invalid action reporter specified: $INPUT_REPORTER"
   status=1
