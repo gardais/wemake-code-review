@@ -30,9 +30,9 @@ RUN pip install "wemake-python-styleguide==$WPS_VERSION" \
   | sh -s -- -b /usr/local/bin/ "$REVIEWDOG_VERSION"
 
 # Custom configuration for this action:
-COPY ./scripts/action-config.cfg /
+COPY ./action-config.cfg /
 
 # Entrypoint:
-COPY ./scripts/entrypoint.sh /
+COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
